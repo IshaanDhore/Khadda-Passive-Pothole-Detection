@@ -51,6 +51,7 @@ public class SensorService extends Service implements SensorEventListener {
             dbSynchronizer.queueEvent(timestamp, currentLat, currentLng, algorithm, severity);
             
             Intent intent = new Intent("POTHOLE_EVENT");
+            intent.setPackage(getPackageName());
             intent.putExtra("algorithm", algorithm);
             intent.putExtra("severity", severity);
             intent.putExtra("lat", currentLat);
