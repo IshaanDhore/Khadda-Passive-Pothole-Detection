@@ -13,3 +13,15 @@
 .externalNativeBuild
 .cxx
 local.properties
+KhaddaApp/build/
+KhaddaApp/.gradle/
+KhaddaApp/app/build/
+
+# Large files and datasets
+*.zip
+venv/
+*.pt
+*.onnx
+Pothole_Dataset/
+*.pdf
+*.docx

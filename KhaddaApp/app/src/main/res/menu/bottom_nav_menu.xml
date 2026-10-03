@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_monitor"
+        android:icon="@drawable/ic_monitor"
+        android:title="@string/nav_monitor" />
+
+    <item
+        android:id="@+id/nav_map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/nav_map" />
+
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/ic_history"
+        android:title="@string/nav_history" />
+
+    <item
+        android:id="@+id/nav_authority"
+        android:icon="@drawable/ic_authority"
+        android:title="@string/nav_authority" />
+
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/ic_report"
+        android:title="@string/nav_report" />
+</menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#38BDF8</color>
+    <color name="primary_variant">#0284C7</color>
+    <color name="on_primary">#0F172A</color>
+
+    <color name="background">#0B1120</color>
+    <color name="surface">#1E293B</color>
+    <color name="surface_variant">#334155</color>
+    <color name="on_surface">#F8FAFC</color>
+    <color name="on_surface_muted">#94A3B8</color>
+
+    <!-- Severity Colors -->
+    <color name="severity_high">#EF4444</color>
+    <color name="severity_medium">#F59E0B</color>
+    <color name="severity_low">#10B981</color>
+
+    <!-- Waveform Axis Colors -->
+    <color name="axis_x">#FF5252</color>
+    <color name="axis_y">#69F0AE</color>
+    <color name="axis_z">#40C4FF</color>
+
+    <!-- Controls -->
+    <color name="btn_start">#10B981</color>
+    <color name="btn_stop">#EF4444</color>
+    <color name="divider">#334155</color>
+</resources>
