@@ -1,0 +1,7 @@
+Simulation: false
+Vehicle: Bike
+Mount: Handlebar
+Phone: moto g64 5G
+Android: 15
+StartTime: Mon Oct 05 12:31:14 GMT+05:30 2026
+Thresholds: ZDiff=5.0, Stdev=5.0, ZThresh=3.92, GZero=2.5

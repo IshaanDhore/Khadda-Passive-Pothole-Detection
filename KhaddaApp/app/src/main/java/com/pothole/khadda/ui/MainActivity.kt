@@ -11,6 +11,7 @@ import com.pothole.khadda.ui.map.MapFragment
 import com.pothole.khadda.ui.monitor.MonitorFragment
 import com.pothole.khadda.ui.report.ReportFragment
 import com.pothole.khadda.ui.settings.SettingsFragment
+import android.view.KeyEvent
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,6 +63,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnSettings.setOnClickListener {
             loadFragment(settingsFragment, "Algorithm Settings")
         }
+        
+        binding.toolbar.findViewById<android.view.View>(R.id.btnGallery).setOnClickListener {
+            startActivity(android.content.Intent(this, DebugGalleryActivity::class.java))
+        }
     }
 
     private fun loadFragment(fragment: Fragment, title: String) {
@@ -69,5 +74,19 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_container, fragment)
             .commit()
         binding.toolbar.title = title
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                monitorFragment.triggerManualPotholeFromVolumeKey("MANUAL_POTHOLE")
+                return true
+            }
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                monitorFragment.triggerManualPotholeFromVolumeKey("MANUAL_SPEED_BREAKER")
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

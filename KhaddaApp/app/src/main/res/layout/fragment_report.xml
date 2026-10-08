@@ -209,5 +209,15 @@
                 app:cornerRadius="12dp" />
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExportTelemetry"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/primary"
+            android:text="Export Telemetry Logs (Raw)"
+            android:textColor="@color/background"
+            app:cornerRadius="12dp" />
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

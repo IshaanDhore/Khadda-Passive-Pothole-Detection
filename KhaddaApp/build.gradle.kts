@@ -5,7 +5,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.24-1.0.20" apply false
 }
 
-allprojects {
-    // Redirect build directory outside of OneDrive to prevent "Cannot snapshot ... not a regular file" lock errors
-    layout.buildDirectory.set(File(System.getProperty("java.io.tmpdir"), "KhaddaBuild/${project.name}"))
-}
+// allprojects {
+//     // Redirect build directory outside of OneDrive to prevent "Cannot snapshot ... not a regular file" lock errors
+//     layout.buildDirectory.set(File(System.getProperty("java.io.tmpdir"), "KhaddaBuild/${project.name}"))
+// }

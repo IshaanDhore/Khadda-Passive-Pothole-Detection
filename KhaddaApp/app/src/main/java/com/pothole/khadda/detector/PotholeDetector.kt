@@ -20,10 +20,10 @@ data class DetectionResult(
  * Matches UML Class Diagram: PotholeDetector.
  */
 class PotholeDetector(
-    var zDiffThreshold: Double = 1.96,    // 0.2g in m/s^2 (SRS REQ-6)
-    var zThreshThreshold: Double = 3.92,  // 0.4g in m/s^2 (SRS REQ-4)
-    var stdevThreshold: Double = 1.96,    // 0.2g in m/s^2 (SRS REQ-9)
-    var gZeroThreshold: Double = 7.84,    // 0.8g in m/s^2 (SRS REQ-11)
+    var zDiffThreshold: Double = 5.0,     // Increased for bike mount
+    var zThreshThreshold: Double = 3.92,  
+    var stdevThreshold: Double = 5.0,     // Increased for bike mount
+    var gZeroThreshold: Double = 2.5,     // Reduced from 7.84 to ~0.25g
     var isZDiffEnabled: Boolean = true,
     var isZThreshEnabled: Boolean = true,
     var isStdevEnabled: Boolean = true,
@@ -51,45 +51,41 @@ class PotholeDetector(
         return isStdevEnabled && stdevZ >= stdevThreshold
     }
 
+    private var gZeroCounter: Int = 0
+
     /**
      * G-ZERO Algorithm: Detects temporary free-fall condition when the wheel drops into a cavity.
+     * Must hold for at least 3 consecutive samples to reject pure noise.
      */
     fun isGZeroTriggered(accelMagnitude: Double): Boolean {
-        return isGZeroEnabled && accelMagnitude <= gZeroThreshold
+        if (!isGZeroEnabled) return false
+        if (accelMagnitude <= gZeroThreshold) {
+            gZeroCounter++
+        } else {
+            gZeroCounter = 0
+        }
+        return gZeroCounter >= 3
     }
 
     /**
      * Evaluates all enabled algorithms against the extracted features.
      */
-    fun detect(features: FeatureSet): DetectionResult? {
+    fun getTriggeredAlgorithms(features: FeatureSet): List<AlgorithmType> {
         val triggered = mutableListOf<AlgorithmType>()
+        if (isZDiffTriggered(features.zDiff)) triggered.add(AlgorithmType.Z_DIFF)
+        if (isZThreshTriggered(features.zThreshDiff)) triggered.add(AlgorithmType.Z_THRESH)
+        if (isStdevTriggered(features.stdevZ)) triggered.add(AlgorithmType.STDEV_Z)
+        if (isGZeroTriggered(features.accelMagnitude)) triggered.add(AlgorithmType.G_ZERO)
+        return triggered
+    }
 
-        if (isZDiffTriggered(features.zDiff)) {
-            triggered.add(AlgorithmType.Z_DIFF)
-        }
-        if (isZThreshTriggered(features.zThreshDiff)) {
-            triggered.add(AlgorithmType.Z_THRESH)
-        }
-        if (isStdevTriggered(features.stdevZ)) {
-            triggered.add(AlgorithmType.STDEV_Z)
-        }
-        if (isGZeroTriggered(features.accelMagnitude)) {
-            triggered.add(AlgorithmType.G_ZERO)
-        }
-
-        if (triggered.isEmpty()) {
-            return null
-        }
-
-        // Determine highest-priority primary algorithm
+    fun buildResult(features: FeatureSet, triggered: List<AlgorithmType>): DetectionResult {
         val primary = when {
             triggered.contains(AlgorithmType.Z_DIFF) -> AlgorithmType.Z_DIFF
             triggered.contains(AlgorithmType.Z_THRESH) -> AlgorithmType.Z_THRESH
             triggered.contains(AlgorithmType.G_ZERO) -> AlgorithmType.G_ZERO
             else -> AlgorithmType.STDEV_Z
         }
-
-        // Determine severity using z-diff or z-thresh deviation
         val impact = maxOf(features.zDiff, features.zThreshDiff)
         val severity = PotholeEvent.calculateSeverity(impact)
 

@@ -16,6 +16,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name"
         app:titleTextColor="@color/on_surface">
+        <ImageButton
+            android:id="@+id/btnGallery"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Debug Gallery"
+            android:src="@android:drawable/ic_menu_gallery"
+            app:tint="@color/primary" />
 
         <ImageButton
             android:id="@+id/btnSettings"

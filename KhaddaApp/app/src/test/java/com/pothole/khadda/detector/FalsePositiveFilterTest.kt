@@ -34,10 +34,13 @@ class FalsePositiveFilterTest {
             accelMagnitude = 11.0,
             horizontalAccel = 5.2, // > 4.5 m/s^2 braking
             gyroMagnitude = 0.1,
-            meanZ = 9.81
+            meanZ = 9.81,
+            roll = 0.0,
+            pitch = 0.0,
+            yaw = 0.0
         )
 
-        val result = filter.validateTrigger(brakingFeatures, 18.5204, 73.8567)
+        val result = filter.validateTrigger(brakingFeatures, 18.5204, 73.8567, speedMps = 5.0f)
         assertFalse(result.isValid)
         assertTrue(result.reason.contains("Hard braking"))
     }
@@ -52,10 +55,13 @@ class FalsePositiveFilterTest {
             accelMagnitude = 10.5,
             horizontalAccel = 2.0,
             gyroMagnitude = 1.8, // > 1.2 rad/s turning
-            meanZ = 9.81
+            meanZ = 9.81,
+            roll = 0.0,
+            pitch = 0.0,
+            yaw = 0.4
         )
 
-        val result = filter.validateTrigger(turnFeatures, 18.5204, 73.8567)
+        val result = filter.validateTrigger(turnFeatures, 18.5204, 73.8567, speedMps = 5.0f)
         assertFalse(result.isValid)
         assertTrue(result.reason.contains("Sharp turning"))
     }
@@ -80,15 +86,19 @@ class FalsePositiveFilterTest {
             accelMagnitude = 13.0,
             horizontalAccel = 1.0,
             gyroMagnitude = 0.2,
-            meanZ = 10.0
+            meanZ = 10.0,
+            roll = 0.0,
+            pitch = 0.0,
+            yaw = 0.0
         )
 
-        // Same location (within 5 meters) and only 1000ms later (< 3000ms)
+        // Same location (within 5 meters) and 2000ms later (bypasses 1.5s cooldown, hits 3s duplicate window)
         val duplicateResult = filter.validateTrigger(
             genuineFeatures,
             18.52042,
             73.85671,
-            currentTime = now + 1000L
+            speedMps = 5.0f,
+            currentTime = now + 2000L
         )
         assertFalse(duplicateResult.isValid)
         assertTrue(duplicateResult.reason.contains("Duplicate"))
@@ -98,6 +108,7 @@ class FalsePositiveFilterTest {
             genuineFeatures,
             18.52042,
             73.85671,
+            speedMps = 5.0f,
             currentTime = now + 4000L
         )
         assertTrue(nextResult.isValid)
@@ -112,10 +123,13 @@ class FalsePositiveFilterTest {
             accelMagnitude = 14.0,
             horizontalAccel = 1.5,
             gyroMagnitude = 0.3,
-            meanZ = 10.5
+            meanZ = 10.5,
+            roll = 0.0,
+            pitch = 0.0,
+            yaw = 0.0
         )
 
-        val result = filter.validateTrigger(features, 18.5204, 73.8567)
+        val result = filter.validateTrigger(features, 18.5204, 73.8567, speedMps = 5.0f)
         assertTrue(result.isValid)
         assertEquals("Confirmed Pothole", result.reason)
     }

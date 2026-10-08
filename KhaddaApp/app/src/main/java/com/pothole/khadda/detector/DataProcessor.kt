@@ -17,7 +17,8 @@ data class FeatureSet(
     val meanZ: Double,
     val roll: Double,
     val pitch: Double,
-    val yaw: Double
+    val yaw: Double,
+    val vertAccel: Double
 )
 
 /**
@@ -29,11 +30,10 @@ class DataProcessor(
     var zDiffThreshold: Double = 1.96 // ~0.2g in m/s^2
 ) {
     private val zWindow = ArrayDeque<Double>(filterWindow + 5)
-    private var prevZ: Double? = null
-
-    // Low-pass Exponential Moving Average (EMA) smoothing factor
-    private val alpha = 0.85
-    private var filteredZ: Double = 9.81
+    
+    // Smoothing buffers for vertical acceleration
+    private val vertWindow = ArrayDeque<Double>(5)
+    private val smoothedVertHistory = ArrayDeque<Double>(10)
 
     // Gyroscope tracking variables
     private var fwdAccum = floatArrayOf(0f, 1f, 0f) // initial guess
@@ -47,26 +47,7 @@ class DataProcessor(
         return floatArrayOf(a[0]/m, a[1]/m, a[2]/m)
     }
 
-    /**
-     * Applies EMA low-pass filtering to remove minor engine/road surface micro-vibrations.
-     */
-    fun removeNoise(rawZ: Double): Double {
-        filteredZ = alpha * filteredZ + (1.0 - alpha) * rawZ
-        return filteredZ
-    }
-
-    /**
-     * Calculates absolute difference between consecutive vertical (Z-axis) measurements.
-     */
-    fun calculateZDiff(currZ: Double): Double {
-        val last = prevZ
-        prevZ = currZ
-        return if (last != null) {
-            abs(currZ - last)
-        } else {
-            0.0
-        }
-    }
+    // calculateZDiff is now computed using smoothed history inline
 
     /**
      * Adds sample to rolling window and calculates standard deviation.
@@ -86,25 +67,38 @@ class DataProcessor(
         return sqrt(sumSquaredDiffs / zWindow.size)
     }
 
-    /**
-     * Extracts full feature set for algorithm evaluation and false-positive filtering.
-     * @param gpsAccel Optional GPS acceleration (m/s^2) for orientation calibration
-     */
     fun extractFeatures(data: SensorData, gpsAccel: Float = 0f): FeatureSet {
-        val zDiff = calculateZDiff(data.accelZ)
-        val stdev = updateRollingWindow(data.accelZ)
-        val zThreshDiff = abs(data.accelZ - 9.80665) 
+        // 1. Calculate precise gravity up-vector
+        val gravity = floatArrayOf(data.gravX.toFloat(), data.gravY.toFloat(), data.gravZ.toFloat())
+        val up = norm(gravity)
+        
+        // 2. Project linear acceleration onto gravity to get pure vertical acceleration
+        val lin = floatArrayOf(data.linX.toFloat(), data.linY.toFloat(), data.linZ.toFloat())
+        val vertAccel = dot(lin, up).toDouble()
+
+        // 3. Smooth vertical acceleration (5-sample moving average)
+        vertWindow.addLast(vertAccel)
+        if (vertWindow.size > 5) vertWindow.removeFirst()
+        val smoothedVert = if (vertWindow.isNotEmpty()) vertWindow.average() else 0.0
+
+        // 4. Compute Z-DIFF over a 100ms span (10 samples at 100Hz)
+        smoothedVertHistory.addLast(smoothedVert)
+        if (smoothedVertHistory.size > 10) smoothedVertHistory.removeFirst()
+        val zDiff = if (smoothedVertHistory.size == 10) {
+            abs(smoothedVert - smoothedVertHistory.first())
+        } else 0.0
+
+        // 5. Update other features using the projected vertical acceleration
+        val stdev = updateRollingWindow(vertAccel)
+        // Z-THRESH measures absolute distance from 0 (since gravity is removed)
+        val zThreshDiff = abs(smoothedVert) 
         val accelMag = data.getAccelMagnitude()
         val horizAccel = data.getHorizontalAccel()
         val gyroMag = data.getGyroMagnitude()
-        val meanZ = if (zWindow.isNotEmpty()) zWindow.average() else data.accelZ
+        val meanZ = if (zWindow.isNotEmpty()) zWindow.average() else vertAccel
 
         // Compute advanced gyroscope orientation features
-        val gravity = floatArrayOf(data.gravX.toFloat(), data.gravY.toFloat(), data.gravZ.toFloat())
         val gyro = floatArrayOf(data.gyroX.toFloat(), data.gyroY.toFloat(), data.gyroZ.toFloat())
-        val lin = floatArrayOf(data.linX.toFloat(), data.linY.toFloat(), data.linZ.toFloat())
-
-        val up = norm(gravity)
         val yaw = dot(gyro, up)
 
         if (Math.abs(gpsAccel) > 1.5f) {
@@ -132,14 +126,15 @@ class DataProcessor(
             meanZ = meanZ,
             roll = roll.toDouble(),
             pitch = pitch.toDouble(),
-            yaw = yaw.toDouble()
+            yaw = yaw.toDouble(),
+            vertAccel = vertAccel
         )
     }
 
     fun reset() {
         zWindow.clear()
-        prevZ = null
-        filteredZ = 9.81
+        vertWindow.clear()
+        smoothedVertHistory.clear()
         fwdAccum = floatArrayOf(0f, 1f, 0f)
     }
 }

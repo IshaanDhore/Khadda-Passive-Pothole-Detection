@@ -10,13 +10,17 @@ import com.pothole.khadda.databinding.ItemPotholeCardBinding
 import com.pothole.khadda.model.PotholeEvent
 import com.pothole.khadda.model.RepairStatus
 import com.pothole.khadda.model.SeverityLevel
+import android.net.Uri
+import android.view.View
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class PotholeAdapter(
     private val onItemClick: (PotholeEvent) -> Unit,
-    private val onStatusChangeClick: ((PotholeEvent) -> Unit)? = null
+    private val onStatusChangeClick: ((PotholeEvent) -> Unit)? = null,
+    private val onLongClick: ((PotholeEvent) -> Unit)? = null
 ) : ListAdapter<PotholeEvent, PotholeAdapter.PotholeViewHolder>(PotholeDiffCallback()) {
 
     private val dateFormat = SimpleDateFormat("dd MMM, hh:mm:ss a", Locale.getDefault())
@@ -48,6 +52,42 @@ class PotholeAdapter(
                 event.longitude
             )
 
+            val context = binding.root.context
+            val imageFile = File(context.filesDir, "pothole_${event.eventId}.jpg")
+            if (imageFile.exists()) {
+                binding.ivPothole.visibility = View.VISIBLE
+                binding.ivPothole.setImageURI(Uri.fromFile(imageFile))
+                
+                binding.ivPothole.setOnClickListener {
+                    val dialog = android.app.Dialog(context)
+                    dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+                    
+                    val imageView = android.widget.ImageView(context)
+                    imageView.setImageURI(Uri.fromFile(imageFile))
+                    imageView.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    imageView.setOnClickListener { dialog.dismiss() }
+                    
+                    dialog.setContentView(
+                        imageView, 
+                        android.view.ViewGroup.LayoutParams(
+                            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                            android.view.ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                    )
+                    
+                    dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(Color.BLACK))
+                    dialog.window?.setLayout(
+                        android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                        android.view.ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    dialog.show()
+                }
+            } else {
+                binding.ivPothole.visibility = View.GONE
+                binding.ivPothole.setImageDrawable(null)
+                binding.ivPothole.setOnClickListener(null)
+            }
+
             // Severity styling
             when (event.severity) {
                 SeverityLevel.HIGH -> {
@@ -74,6 +114,11 @@ class PotholeAdapter(
 
             binding.root.setOnClickListener {
                 onItemClick(event)
+            }
+            
+            binding.root.setOnLongClickListener {
+                onLongClick?.invoke(event)
+                true
             }
 
             binding.btnChangeStatus.setOnClickListener {

@@ -2,4 +2,5 @@
 <paths>
     <cache-path name="export_cache" path="exports/" />
     <external-files-path name="export_external" path="exports/" />
+    <external-files-path name="telemetry_logs" path="Documents/KhaddaLogs/" />
 </paths>

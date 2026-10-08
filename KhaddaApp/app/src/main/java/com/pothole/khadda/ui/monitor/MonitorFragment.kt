@@ -41,7 +41,6 @@ class MonitorFragment : Fragment() {
             detectionService = binder.getService()
             isBound = true
 
-            // Attach callbacks
             detectionService?.onLiveSensorData = { data ->
                 activity?.runOnUiThread {
                     binding.waveformView.addSample(
@@ -68,6 +67,7 @@ class MonitorFragment : Fragment() {
             }
 
             updateUiState(detectionService?.isDetectionActive == true)
+            binding.switchTorch.isChecked = detectionService?.isTorchEnabled ?: true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -114,6 +114,26 @@ class MonitorFragment : Fragment() {
             }
         }
 
+        binding.btnMarkPothole.setOnClickListener {
+            val active = detectionService?.isDetectionActive ?: false
+            if (active) {
+                detectionService?.triggerManualPothole("MANUAL_POTHOLE")
+                Toast.makeText(requireContext(), "Pothole marked!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Start monitoring first!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnMarkSpeedBreaker.setOnClickListener {
+            val active = detectionService?.isDetectionActive ?: false
+            if (active) {
+                detectionService?.triggerManualPothole("MANUAL_SPEED_BREAKER")
+                Toast.makeText(requireContext(), "Speed breaker marked!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Start monitoring first!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.switchDemoMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setDemoMode(isChecked)
             if (detectionService?.isDetectionActive == true) {
@@ -121,6 +141,10 @@ class MonitorFragment : Fragment() {
                 stopDetection()
                 checkPermissionsAndStart()
             }
+        }
+
+        binding.switchTorch.setOnCheckedChangeListener { _, isChecked ->
+            detectionService?.toggleTorch(isChecked)
         }
 
         viewModel.sessionPotholeCount.observe(viewLifecycleOwner) { count ->
@@ -225,5 +249,13 @@ class MonitorFragment : Fragment() {
             isBound = false
         }
         _binding = null
+    }
+
+    fun triggerManualPotholeFromVolumeKey(eventType: String) {
+        val active = detectionService?.isDetectionActive ?: false
+        if (active) {
+            detectionService?.triggerManualPothole(eventType)
+            Toast.makeText(requireContext(), "$eventType marked via volume key!", Toast.LENGTH_SHORT).show()
+        }
     }
 }

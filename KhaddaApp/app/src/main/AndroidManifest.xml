@@ -62,6 +62,10 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-    </application>
+        <activity
+            android:name=".ui.DebugGalleryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Khadda" />
 
+    </application>
 </manifest>

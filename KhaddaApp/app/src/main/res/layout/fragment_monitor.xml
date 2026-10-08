@@ -53,6 +53,16 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchTorch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Torch"
+                        android:textColor="@color/on_surface_muted"
+                        android:textSize="12sp"
+                        android:checked="true" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchDemoMode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -116,12 +126,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardStatus" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnToggleMonitoring">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMarkPothole"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="#F59E0B"
+                android:elevation="2dp"
+                android:text="Test Pothole"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMarkSpeedBreaker"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="#3B82F6"
+                android:elevation="2dp"
+                android:text="Test Breaker"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+        </LinearLayout>
+
         <!-- Real-Time Waveform Visualizer Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardWaveform"
             android:layout_width="0dp"
             android:layout_height="220dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="80dp"
             app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -28,8 +28,14 @@ class FalsePositiveFilter(
         features: FeatureSet,
         latitude: Double,
         longitude: Double,
+        speedMps: Float,
         currentTime: Long = System.currentTimeMillis()
     ): ValidationResult {
+        // 0. Speed gate (ignore below 10km/h ~ 2.77 m/s)
+//        if (speedMps < 2.77f) {
+//            return ValidationResult(isValid = false, reason = "Filtered: Speed below 10km/h")
+//        }
+
         // 1. Check for hard braking without vertical impact
         if (features.horizontalAccel > maxBrakingThreshold && features.zDiff < 2.5) {
             return ValidationResult(isValid = false, reason = "Filtered: Hard braking / acceleration")
@@ -45,10 +51,15 @@ class FalsePositiveFilter(
             return ValidationResult(isValid = false, reason = "Filtered: High gyro magnitude")
         }
 
-        // 3. Check for duplicate detection within space-time window
+        // 3. Check for cooldown (1.5 seconds purely on time) and duplicate window
         val last = lastConfirmedEvent
         if (last != null) {
             val timeDiff = currentTime - last.timestamp
+            // Strict 1.5s cooldown regardless of distance
+            if (timeDiff < 1500L) {
+                return ValidationResult(isValid = false, reason = "Filtered: Cooldown period active")
+            }
+            // Original distance check within larger duplicate window
             if (timeDiff in 0 until duplicateTimeMillis) {
                 val distance = calculateDistanceMeters(
                     latitude, longitude,

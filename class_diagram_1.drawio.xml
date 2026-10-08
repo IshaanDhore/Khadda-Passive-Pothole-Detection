@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="79yRxmgTge9zdbD6zq7K">
+    <mxGraphModel dx="1457" dy="754" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QJrislySUXXLcCyPorQP-2" edge="1" parent="1" source="User" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="DetectionSession" value="starts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="User" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;User&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- userId : String&lt;br&gt;           - name : String&lt;br&gt;           - email : String&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="230" x="50" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-3" edge="1" parent="1" source="DetectionSession" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="SensorManager" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DetectionSession" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;DetectionSession&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - sessionId : String&lt;br&gt;           - startTime : DateTime&lt;br&gt;           - endTime : DateTime&lt;br&gt;           - status : SessionStatus&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="145" width="230" x="355" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-4" edge="1" parent="1" source="SensorManager" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Accelerometer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-6" edge="1" parent="1" source="SensorManager" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="SensorData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SensorManager" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;SensorManager&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - samplingRate : int&lt;br&gt;           - isRecording : boolean&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="240" x="660" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Accelerometer" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;Accelerometer&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - accelX : double&lt;br&gt;           - accelY : double&lt;br&gt;           - accelZ : double&lt;/div&gt;" vertex="1">
+          <mxGeometry height="145" width="220" x="1030" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Gyroscope" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;Gyroscope&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - gyroX : double&lt;br&gt;           - gyroY : double&lt;br&gt;           - gyroZ : double&lt;/div&gt;" vertex="1">
+          <mxGeometry height="145" width="220" x="1030" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="SensorData" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;SensorData&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - timestamp : long&lt;br&gt;           - accelX : double&lt;br&gt;           - accelY : double&lt;br&gt;           - accelZ : double&lt;br&gt;           - gyroX : double&lt;br&gt;           - gyroY : double&lt;br&gt;           - gyroZ : double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="250" x="650" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-7" edge="1" parent="1" source="DataProcessor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="SensorData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-8" edge="1" parent="1" source="DataProcessor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="PotholeDetector">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DataProcessor" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;DataProcessor&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - filterWindow : int&lt;br&gt;           - zDiffThreshold : double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="330" x="970" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-11" edge="1" parent="1" source="PotholeDetector" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="PotholeEvent" value="detects">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PotholeDetector" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;PotholeDetector&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - algorithm : String&lt;br&gt;           - threshold : double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="300" x="1070" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="PotholeEvent" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;PotholeEvent&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - eventId : String&lt;br&gt;           - timestamp : long&lt;br&gt;           - latitude : double&lt;br&gt;           - longitude : double&lt;br&gt;           - zDiffValue : double&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="270" x="350" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-12" edge="1" parent="1" source="LocationService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="PotholeEvent" value="povides&lt;div&gt;location&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LocationService" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;LocationService&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - provider : String&lt;br&gt;           - accuracy : float&lt;br&gt;           - isGPSEnabled : boolean&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="270" x="30" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="LocalDatabase" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;LocalDatabase&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - dbName : String&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="330" x="650" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="DetectionReport" parent="1" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;           spacingTop=8;spacingLeft=8;fillColor=#ffffff;           strokeColor=#000000;fontSize=12;" value="&lt;b&gt;DetectionReport&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;           - reportId : String&lt;br&gt;           - sessionId : String&lt;br&gt;           - totalEvents : int&lt;br&gt;           - generatedOn : DateTime&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="155" width="300" x="1180" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-4" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="230" x="50" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-5" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="230" x="355" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-6" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="240" x="660" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-7" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="220" x="1030" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-10" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="220" x="1030" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-11" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="330" x="970" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-12" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="250" x="650" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-14" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="270" x="30" y="492.5" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-15" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="270" x="350" y="712" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-16" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="300" x="1070" y="652" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-18" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="330" x="650" y="982" as="geometry" />
+        </mxCell>
+        <mxCell id="98U9AJazvnyqlTlMLtRq-19" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="300" x="1180" y="912" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-9" edge="1" parent="1" source="PotholeDetector" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.38;entryY=0.009;entryDx=0;entryDy=0;entryPerimeter=0;" target="DetectionReport">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJrislySUXXLcCyPorQP-10" edge="1" parent="1" source="LocalDatabase" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.001;entryY=0.444;entryDx=0;entryDy=0;entryPerimeter=0;" target="DetectionReport" value="stores">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QG4TdNlnUpp5hmQxqh0D-1" edge="1" parent="1" source="SensorManager" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.001;entryY=0.689;entryDx=0;entryDy=0;entryPerimeter=0;" target="Gyroscope">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

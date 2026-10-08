@@ -32,8 +32,8 @@ data class PotholeEvent(
          */
         fun calculateSeverity(impactMagnitude: Double): SeverityLevel {
             return when {
-                impactMagnitude >= 6.0 -> SeverityLevel.HIGH
-                impactMagnitude >= 3.0 -> SeverityLevel.MEDIUM
+                impactMagnitude >= 9.0 -> SeverityLevel.HIGH
+                impactMagnitude >= 6.5 -> SeverityLevel.MEDIUM
                 else -> SeverityLevel.LOW
             }
         }

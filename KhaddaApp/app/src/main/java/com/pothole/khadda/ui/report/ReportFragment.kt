@@ -10,6 +10,10 @@ import androidx.fragment.app.activityViewModels
 import com.pothole.khadda.databinding.FragmentReportBinding
 import com.pothole.khadda.model.PotholeEvent
 import com.pothole.khadda.model.SeverityLevel
+import android.content.Intent
+import android.os.Environment
+import androidx.core.content.FileProvider
+import java.io.File
 
 class ReportFragment : Fragment() {
 
@@ -78,6 +82,47 @@ class ReportFragment : Fragment() {
             try {
                 val jsonFile = ReportExporter.exportToJson(requireContext(), report, cachedEvents)
                 ReportExporter.shareFile(requireContext(), jsonFile, "application/json")
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Export failed: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnExportTelemetry.setOnClickListener {
+            try {
+                val dir = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "KhaddaLogs")
+                if (!dir.exists() || dir.listFiles()?.isEmpty() == true) {
+                    Toast.makeText(requireContext(), "No telemetry logs found.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val files = dir.listFiles() ?: return@setOnClickListener
+                val filesToZip = files.filter { it.extension != "zip" }
+                
+                if (filesToZip.isEmpty()) {
+                    Toast.makeText(requireContext(), "No telemetry logs found.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val zipFile = File(dir, "KhaddaTelemetry_${System.currentTimeMillis()}.zip")
+                java.util.zip.ZipOutputStream(java.io.FileOutputStream(zipFile)).use { zos ->
+                    filesToZip.forEach { file ->
+                        java.io.FileInputStream(file).use { fis ->
+                            val entry = java.util.zip.ZipEntry(file.name)
+                            zos.putNextEntry(entry)
+                            fis.copyTo(zos)
+                            zos.closeEntry()
+                        }
+                    }
+                }
+
+                val uri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.fileprovider", zipFile)
+
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/zip"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                startActivity(Intent.createChooser(intent, "Share Telemetry Logs (ZIP)"))
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Export failed: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }

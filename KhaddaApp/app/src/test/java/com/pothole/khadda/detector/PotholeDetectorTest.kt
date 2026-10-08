@@ -51,7 +51,9 @@ class PotholeDetectorTest {
 
     @Test
     fun testGZeroAlgorithm_triggersWhenTotalMagnitudeBelowThreshold() {
-        // Reference threshold is 0.8g ~ 7.84 m/s^2 (drop / free fall into pothole)
+        // Must hold for 3 consecutive samples
+        assertFalse(detector.isGZeroTriggered(5.5))
+        assertFalse(detector.isGZeroTriggered(5.5))
         assertTrue(detector.isGZeroTriggered(5.5))
         assertFalse(detector.isGZeroTriggered(9.81))
     }
@@ -65,20 +67,25 @@ class PotholeDetectorTest {
             accelMagnitude = 14.5,
             horizontalAccel = 1.0,
             gyroMagnitude = 0.2,
-            meanZ = 12.0
+            meanZ = 12.0,
+            roll = 0.0,
+            pitch = 0.0,
+            yaw = 0.0
         )
 
-        val result = detector.detect(features)
+        val triggered = detector.getTriggeredAlgorithms(features)
+        val result = detector.buildResult(features, triggered)
+        
         assertNotNull(result)
-        assertTrue(result!!.isDetected)
+        assertTrue(result.isDetected)
         assertEquals(AlgorithmType.Z_DIFF, result.primaryAlgorithm)
-        assertEquals(SeverityLevel.HIGH, result.severity)
+        assertEquals(SeverityLevel.MEDIUM, result.severity)
     }
 
     @Test
     fun testSeverityClassification() {
-        assertEquals(SeverityLevel.HIGH, PotholeEvent.calculateSeverity(7.5))
-        assertEquals(SeverityLevel.MEDIUM, PotholeEvent.calculateSeverity(4.2))
-        assertEquals(SeverityLevel.LOW, PotholeEvent.calculateSeverity(1.8))
+        assertEquals(SeverityLevel.HIGH, PotholeEvent.calculateSeverity(9.5))
+        assertEquals(SeverityLevel.MEDIUM, PotholeEvent.calculateSeverity(7.5))
+        assertEquals(SeverityLevel.LOW, PotholeEvent.calculateSeverity(4.2))
     }
 }
